@@ -4,16 +4,13 @@
 /* Autor: Ruy Braga Filho                               */
 
 
-#include "Ponto2D.h"
-#include "Bicicleta.h"
-#include "Pessoa.h"
+
 #include "TipoItem.h"
 #include "TipoLista.h"
-//#include "CasamentoEstavel.h"
+#include "TipoGrafo.h"
 
 #include <iostream>
 #include <string>
-//#include <cmath>
 #include <array>
 
 using std::size_t;
@@ -25,46 +22,9 @@ using std::array;
 
 
 
-/* Prototipo da função que carrega o número de pessoas e bicicletas */
-void carregarNumeroDeEntidades( long& n );
-
-
-/* Prototipo da função que carrega as dimenções do grid */
-void carregarDimensoesGrid( long& linhas, long& colunas );
-
-/* Prototipo da função que cria um mapa (grid) */
-char** criarMapa( long linhas, long colunas );
-
-
-/* Prototipo da função que carrega o mapa (grid) */
-void carregarMapa( char** mapa, long linhas, long colunas );
-
-
-/* Prototipo da função que mostra o mapa (grid) */
-void mostrarMapa( char** mapa, long linhas, long colunas );
-
-
-/* Prototipo da função que desaloca o mapa (grid) */
-void destruirMapa( char** mapa, long linhas );
-
-
-/* Prototipo da função que carrega a tabela de preferência das pessoas pelas bicicletas */
-TipoLista<TipoItem>* carregarTabelaPreferenciaDasPessoas( long numEntidades );
-
-
-
-/* Prototipo da função que carrega as bicicletas */
-void carregarBicicletas( TipoLista<Bicicleta>& bicicleta, long numBicicletas );
-
-
-/* Prototipo da função que carrega as pessoas */
-void carregarPessoas( TipoLista<Pessoa>& pessoa, long numPessoas );
-
-
-
-/* Prototipo da função que imprime o resultado do casamento estavel de acordo com o TP.  */
-/* A função imprime as pares Pessoa - Bicicleta.                                         */
-void imprimirCasamentoEstavel( TipoLista<Pessoa>* match );                        
+/* Prototipo da funcao que carrega o Grafo contendo    */
+/* as n cidades (vertices) e as m rodovias (arestas).  */
+void carregarGrafo( TipoGrafo<TipoItem>& grafo, long m );
 
 
 
@@ -74,71 +34,48 @@ int main()  {
     cout << "\n\nInicio\n\n";
 
 
-    /* Número de Pessoas e Bicicletas */
-    long n;
-    carregarNumeroDeEntidades( n );
+    /* Número de Cidades */
+    long n; 
+    cin >> n;    
     cout << "n: " << n;
 
 
-    /* Dimensões do grid */
-    long linhas = 0;
-    long colunas = 0;
-    carregarDimensoesGrid( linhas, colunas );
-    cout << "\nDimensoes Grid: (" << linhas << ", " << colunas << ")\n\n";
+    /* Número de Rodovias */
+    long m;
+    cin >> m;
+    cout << "\nm: " << m;
 
 
-    /* Mapa */
- 
-    char** mapa = criarMapa( linhas, colunas );
-
-    carregarMapa( mapa, linhas, colunas );
-    mostrarMapa( mapa, linhas, colunas );
-
-    destruirMapa( mapa, linhas );
+    /* Número de Consultas */
+    long q;
+    cin >> q;
+    cout << "\nq: " << q;    
 
 
 
-    /* Lista de Bicicletas */
-    TipoLista<Bicicleta> bicicleta;
-    carregarBicicletas( bicicleta, n );
+    
+    /* Grafo contendo as cidades (vertices) e as */
+    /* rodovias (arestas).                       */
+    TipoGrafo<TipoItem> grafo( n );
+    carregarGrafo( grafo, m );
 
-    cout << "\n\n Lista de Bicicletas\n";
-    bicicleta.imprimir();
+    cout << "\n\n Mostrar o Grafo\n";
+    grafo.imprimir();
 
 
-    /* Lista de Pessoas */
-    TipoLista<Pessoa> pessoa;
-    carregarPessoas( pessoa, n );
+    /* Mostrar consultas */
+    cout << "\n\n Consultas\n";    
 
-    cout << "\n\n Lista de Pessoas\n";
-    pessoa.imprimir(); 
+    long u;
+    long v;
+    for( long i=0; i<q; ++i )  {
 
-       
+        cin >> u;
+        cin >> v;
    
-    /* Tabela de Preferencia Das Pessoas por bicicletas */
-    TipoLista<TipoItem>* tabelaPreferenciaDasPessoas = carregarTabelaPreferenciaDasPessoas( n );
-    cout << "\n\nTabela de Preferências das Pessoas\n"; 
-    for(long i=0; i<n; ++i)  {
-
-        tabelaPreferenciaDasPessoas[i].imprimir();        
+        cout << "(" << u << ", " << v << ")\n";        
     }
-    if( tabelaPreferenciaDasPessoas != nullptr ) delete[] tabelaPreferenciaDasPessoas;
 
-    /* Tabela que conterá o resultado. Cada linha i da tabela representa */
-    /* o par Pessoa - Bicicleta.             */
-//    TipoLista<Pessoa>* match = new TipoLista<Cliente>[ loja.tamanhoLista() ];
-
-    /* Criando uma instância do casamento estável */
-//    CasamentoEstavel ce( &cliente, &loja );
-
-    /* Executa o algoritmo de Gale-Shapley */
-//    ce.galeShapley( match );
-
-    /* Imprime o resultado */
-//    imprimirCasamentoEstavel( match, loja.tamanhoLista() );
-
-    /* Desalocando a tabela com o resultado do casamento estável */
-//    delete[] match;
 
    
     cout << "\n\nFim\n\n";    
@@ -148,157 +85,21 @@ int main()  {
 }  /* Fim da definição da função main */
 
 
+/* Definicao da funcao que carrega o Grafo contendo    */
+/* as n cidades (vertices) e as m rodovias (arestas).  */  
+void carregarGrafo( TipoGrafo<TipoItem>& grafo, long m )  {
 
-/* Definição da função que carrega o número de pessoas e bicicletas */
-void carregarNumeroDeEntidades( long& n )  {
+    long u;
+    long v;
+    long capacidade;
 
-    cin >> n;
+    for( long i=0; i<m; ++i )  {
 
-}  /* Fim da definição da função carregarNumeroDeEntidades */
+        cin >> u;
+        cin >> v;
+        cin >> capacidade;
 
-
-
-/* Definição da função que carrega as dimenções do grid */
-void carregarDimensoesGrid( long& linhas, long& colunas )  {
-
-    cin >> linhas;
-    cin >> colunas;
-
-}  /* Fim da definição da função carregarDimensoesGrid */
-
-
-/* Definição da função que cria um mapa (grid) */
-char** criarMapa( long linhas, long colunas )  {
-
-    char** mapa = new char*[linhas];
-
-    for( long i=0; i<linhas; ++i )  {
-        mapa[i] = new char[colunas];
+        grafo.inserirAresta( capacidade, u-1, v-1 );
     }
 
-    return mapa;
-}  /* Fim da definição da função criarMapa */
-
-
-/* Definição da função que carrega o mapa (grid) */
-void carregarMapa( char** mapa, long linhas, long colunas )  {
-
-    if( mapa != nullptr )  {
-
-        for( long i=0; i<linhas; ++i )  {
-
-            for( long j=0; j<colunas; ++j )  {
-                // mapa[i][j] = 'b';
-                cin >> mapa[i][j];
-            }
-        }
-    }
-}  /* Fim da definição da função carregarMapa */
-
-
-
-/* Definição da função que mostra o mapa (grid) */
-void mostrarMapa( char** mapa, long linhas, long colunas )  {
-
-    if( mapa != nullptr )  {
-
-        for( long i=0; i<linhas; ++i )  {
-    
-            for( long j=0; j<colunas; ++j )  {
-                cout << mapa[i][j] << ' ';            
-            }
-            cout << '\n';
-        }    
-    }
-}  /* Fim da definição da função mostrarMapa */
-
-
-/* Definição da função que desaloca o mapa (grid) */
-void destruirMapa( char** mapa, long linhas )  {
-
-    if( mapa != nullptr )  {
-   
-        for( long i=0; i<linhas; ++i )  {
-    
-            delete[] mapa[i];        
-        }    
-        delete[] mapa;
-    }
-}  /* Fim da definição da função destruirMapa */
-
-
-/* Definição da função que carrega a tabela de preferência das pessoas pelas bicicletas */
-TipoLista<TipoItem>* carregarTabelaPreferenciaDasPessoas( long numEntidades )  {
-
-    TipoLista<TipoItem>* tabelaPreferenciaPessoas = new TipoLista<TipoItem>[numEntidades];
-    long preferencia;
-
-    for( long i=0; i<numEntidades; ++i ) {
-
-        for( long j=0; j<numEntidades; ++j ) {
-           
-            cin >> preferencia;
-            TipoItem preferenciaBike( j, preferencia );
-            tabelaPreferenciaPessoas[i].inserirOrdenadoDecrescente( preferenciaBike );                
-        }        
-    }    
-
-    return tabelaPreferenciaPessoas;
-
-}  /* Fim da definição da função carregarTabelaPreferenciaDasPessoas */
-
-
-/* Definição da função que desaloca a memória da tabela de preferência das pessoas pelas bicicletas */
-void desalocarTabela( TipoLista<TipoItem>* tabela )  {
-
-    delete[] tabela;
-
-}  /* Fim da definição da função desalocarTabelaPreferenciaDasPessoas */
-
-
-
-
-
-/* Definição da função que carrega as bicicletas */
-void carregarBicicletas( TipoLista<Bicicleta>& bicicleta, long numBicicletas  )  {
-
-    // Carrega os dados de cada bicicleta
-    for( long i=0; i<numBicicletas; ++i )  {
-
-        Ponto2D ponto;
-        Bicicleta b( i, ponto );
-
-        bicicleta.inserirNoFim( b );
-    }    
-
-}  /* Fim da definição da função carregarBicicletas */
-
-
-
-/* Definição da função que carrega as pessoas */
-void carregarPessoas( TipoLista<Pessoa>& pessoa, long numPessoas )  {
-
-    // Carrega os dados de cada pessoa
-    for( long i=0; i<numPessoas; ++i )  {
-
-        Ponto2D ponto;
-        Pessoa p( i, ponto );
-
-        pessoa.inserirNoFim( p );
-    }    
-
-}  /* Fim da definição da função carregarPessoas */
-
-
-/* Definição da função que imprime o resultado do casamento estavel de acordo com o TP.  */
-/* A função imprime a lista de clientes de cada loja.                                    */
-//void imprimirCasamentoEstavel( TipoLista<Cliente>* match,
-//                               long numLojas )  {
-
-//    for( long i=0; i<numLojas; ++i )  {
-
-//        cout << i << endl;
-//        match[i].imprimir();
-//    }
-
-//}  /* Fim da definição da função imprimirCasamentoEstavel */                        
+} // Fim da funcao carregarGrafo
