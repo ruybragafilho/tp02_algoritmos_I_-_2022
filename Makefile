@@ -52,7 +52,7 @@ TipoItem:  $(SOURCE_DIR)/TipoItem.h  $(SOURCE_DIR)/TipoItem.cpp
 
 clean:
 	rm  -f  $(BIN_DIR)/*.bin
-	rm  -f  $(BIN_DIR)/tp1	
+	rm  -f  $(BIN_DIR)/tp2	
 	rm  -f  $(OBJECT_DIR)/*.o	
 	rm  -f -r  $(SOURCE_DIR)/*~     
 	clear
