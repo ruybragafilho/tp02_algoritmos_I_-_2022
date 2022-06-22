@@ -138,6 +138,23 @@ void TipoGrafo<T>::retirarAresta(  long u, long v  )  {
 
 
 
+/* Metodo que pesquisa pelo caminho entre u e v, */
+/* capaz de transportar o maior peso possível.   */
+template <class T>
+long TipoGrafo<T>::pesquisarCaminhoPesoMaximo( long u, long v )  {
+
+    bool verticeVisitado[ this->numVertices ] = {false};
+    long pesoMaximo = 0;
+    long pesoAtual = 0;
+
+    long caminho = auxPesquisarCaminhoPesoMaximo( u, v, verticeVisitado, pesoMaximo, pesoAtual );
+
+    return caminho;
+
+} /*  Fim da definicao do metodo pesquisarCaminhoPesoMaximo.  */
+
+
+
 /*  Metodo que mostra o grafo na saida padrao */
 template <class T>
 void TipoGrafo<T>::imprimir()  {
@@ -151,3 +168,25 @@ void TipoGrafo<T>::imprimir()  {
     }
 
 } /*  Fim da definicao do metodo imprimir.  */     
+
+
+
+/* Metodo auxiliar que pesquisa pelo caminho entre u e v,        */
+/* capaz de transportar o maior peso possível.                   */
+/*                                                               */
+/*   u: vertice de origem                                        */
+/*   v: vertice de destino                                       */
+/*   verticeVisitado: array de booleano que indicar se o vertice */
+/*                    i já foi visitado no caminhamento atual.   */
+/*   pesoMaximo: peso do caminho de maior peso encontrado até    */
+/*               o momento.                                      */
+/*   pesoAtual: peso do caminho atual                            */        
+/*                                                               */
+template <class T>
+long TipoGrafo<T>::auxPesquisarCaminhoPesoMaximo( long u, long v, 
+                                                  bool verticeVisitado[], 
+                                                  long& pesoMaximo, long& pesoAtual )  {
+
+    return 0;
+
+} /*  Fim da definicao do metodo auxPesquisarCaminhoPesoMaximo.  */     

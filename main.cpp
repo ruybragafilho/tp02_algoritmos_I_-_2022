@@ -72,8 +72,12 @@ int main()  {
 
         cin >> u;
         cin >> v;
+
+        --u;
+        --v;
    
-        cout << "(" << u << ", " << v << ")\n";        
+        cout << "(" << u << ", " << v << ")";        
+        cout << "\nMaior Caminho: " << grafo.pesquisarCaminhoPesoMaximo( u, v ) << "\n\n";
     }
 
 
@@ -83,6 +87,8 @@ int main()  {
     return 0;
 
 }  /* Fim da definição da função main */
+
+
 
 
 /* Definicao da funcao que carrega o Grafo contendo    */

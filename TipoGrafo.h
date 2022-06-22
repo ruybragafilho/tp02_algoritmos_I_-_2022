@@ -27,8 +27,27 @@ class TipoGrafo   {
     
     private: 
 
+        /* Atribudo que armazena o número de vértices do grafo. */
         long numVertices;
+
+        /* Array contendo as listas de adjacências dos vértices. */
         TipoLista<T>* listaDeAdjacencia;
+
+
+        /* Metodo auxiliar que pesquisa pelo caminho entre u e v,        */
+        /* capaz de transportar o maior peso possível.                   */
+        /*                                                               */
+        /*   u: vertice de origem                                        */
+        /*   v: vertice de destino                                       */
+        /*   verticeVisitado: array de booleano que indicar se o vertice */
+        /*                    i já foi visitado no caminhamento atual.   */
+        /*   pesoMaximo: peso do caminho de maior peso encontrado até    */
+        /*               o momento.                                      */
+        /*   pesoAtual: peso do caminho atual                            */        
+        /*                                                               */
+        long auxPesquisarCaminhoPesoMaximo( long u, long v, 
+                                            bool verticeVisitado[], 
+                                            long& pesoMaximo, long& pesoAtual );
 
 
     public:
@@ -56,9 +75,15 @@ class TipoGrafo   {
         /*  do grafo passado como parametro.                   */
         void  retirarAresta(  long u, long v  );
                 
-        /*  Prototipo do procedimento que retorna a lista de */
-        /*  adjacencias do vertice passado como parametro.   */
+        /*  Metodo que retorna a lista de adjacencias */
+        /*  do vertice passado como parametro.        */
         //TipoLista*  obtemListaAdjacencia(  TipoGrafo* grafo,  long  vertice   );      
+
+
+        /* Metodo que pesquisa pelo caminho entre u e v, */
+        /* capaz de transportar o maior peso possível.   */
+        long pesquisarCaminhoPesoMaximo( long u, long v );
+
 
         /*  Metodo que mostra o grafo na saida padrao */
         void imprimir();  
