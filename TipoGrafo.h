@@ -34,6 +34,11 @@ class TipoGrafo   {
         TipoLista<T>* listaDeAdjacencia;
 
 
+        /* Método que faz os cursores de todas as listas de adjacencia */
+        /* do grafo apontarem para a primeira aresta da lista.         */
+        void resetCursores();
+
+
         /* Metodo auxiliar que pesquisa pelo caminho entre u e v,        */
         /* capaz de transportar o maior peso possível.                   */
         /*                                                               */
@@ -58,7 +63,7 @@ class TipoGrafo   {
         /* Destrutor da classe TipoGrafo */
         ~TipoGrafo();
 
-
+        
         /*  Metodo que retorna o numero de vertices do grafo  */
         long  getNumVertices();
                 
@@ -70,6 +75,12 @@ class TipoGrafo   {
         /*  Metodo que insere uma aresta de peso p entre os   */
         /*  vertices u e v do grafo passado como parametro.   */
         void  inserirAresta(  long peso, long u, long v  );
+
+        /*  Metodo que insere uma aresta de peso p entre os   */
+        /*  vertices u e v do grafo passado como parametro.   */
+        /*  A aresta é inserida na lista de adjacência de u   */
+        /*  em ordem decrescente de peso.                     */
+        void  inserirArestaOrdenadoDecrescente(  long peso, long u, long v  );        
                 
         /*  Metodo que retira a aresta entre os vertices u e v */
         /*  do grafo passado como parametro.                   */

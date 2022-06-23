@@ -36,6 +36,22 @@ TipoGrafo<T>::~TipoGrafo()  {
 
 
 
+/* Método que faz os cursores de todas as listas de adjacencia */
+/* do grafo apontarem para a primeira aresta da lista.         */
+template <class T>
+void TipoGrafo<T>::resetCursores()  {
+
+    long numVertices = this->numVertices;
+
+    for( long i=0; i<numVertices; ++i )  {
+
+        this->listaDeAdjacencia[i].primeiro();
+    }    
+
+}  /*  Fim da definicao do metodo resetarCursores.  */       
+
+
+
 /*  Metodo que retorna o numero de vertices do grafo  */
 template <class T>
 long TipoGrafo<T>::getNumVertices()  {
@@ -98,41 +114,55 @@ void TipoGrafo<T>::inserirAresta(  long peso, long u, long v  )  {
 
 
 
+/*  Metodo que insere uma aresta de peso p entre os   */
+/*  vertices u e v do grafo passado como parametro.   */
+/*  A aresta é inserida na lista de adjacência de u   */
+/*  em ordem decrescente de peso.                     */
+template <class T>
+void TipoGrafo<T>::inserirArestaOrdenadoDecrescente(  long peso, long u, long v  )  {
+
+    T aresta( v, peso );
+    this->listaDeAdjacencia[u].inserirOrdenadoDecrescente( aresta );   
+    
+}  /*  Fim da definicao do metodo inserirAresta.  */  
+
+
+
 /*  Metodo que retira a aresta entre os vertices u e v */
 /*  do grafo passado como parametro.                   */
 template <class T>
 void TipoGrafo<T>::retirarAresta(  long u, long v  )  {
 
     /* Lista de adjacencia do vertice u */	
-    TipoLista<T>*  listaAdjacenteVerticeU  =  &(this->listaDeAdjacencia[u]);
+    TipoLista<T>*  listaAdjacenciaVerticeU  =  &(this->listaDeAdjacencia[u]);
     
     /* Vertice adjacente v a ser pesquisado */
     T  verticeAdjacente( v, 0 ); 
     
     /* Vertice adjacente na posicao atual da lista de adjacencia */
-    T  verticeAdjacenteAtual;
+    T  verticeAdjacenciaAtual;
 
   	    
     /* Obtem o primeiro vertice da lista de adjacentia de u */
-    listaAdjacenteVerticeU->primeiro();
-    verticeAdjacenteAtual = listaAdjacenteVerticeU->getItem();
+    listaAdjacenciaVerticeU->primeiro();
+    verticeAdjacenciaAtual = listaAdjacenciaVerticeU->getItem();
   
     do  {                            	 
           
         /* Testa se encontrou a aresta pesquisada. */
         /* Se encontrou, a retira do grafo.        */
-        if(  verticeAdjacente == verticeAdjacenteAtual  )   {
+        if(  verticeAdjacente == verticeAdjacenciaAtual  )   {
 
-            listaAdjacenteVerticeU->retirarItem();
+            listaAdjacenciaVerticeU->retirarItem();
             break;
         }
              	 
         /* Obtem o proximo vertice da lista de adjacentia de u, se a */
         /* aresta pesquisada nao foi encontrada no passo anterior.   */
-        listaAdjacenteVerticeU->proximo();
-        verticeAdjacenteAtual = listaAdjacenteVerticeU->getItem();
+        listaAdjacenciaVerticeU->proximo();
+        verticeAdjacenciaAtual = listaAdjacenciaVerticeU->getItem();
 
-    }  while(  listaAdjacenteVerticeU->temMais()  );  	    
+    }  while(  listaAdjacenciaVerticeU->temMais()  );  	    
 
 }  /*  Fim da definicao do metodo retirarAresta.  */  
 
@@ -147,27 +177,13 @@ long TipoGrafo<T>::pesquisarCaminhoPesoMaximo( long u, long v )  {
     long pesoMaximo = 0;
     long pesoAtual = 0;
 
+    resetCursores();
+
     long caminho = auxPesquisarCaminhoPesoMaximo( u, v, verticeVisitado, pesoMaximo, pesoAtual );
 
     return caminho;
 
 } /*  Fim da definicao do metodo pesquisarCaminhoPesoMaximo.  */
-
-
-
-/*  Metodo que mostra o grafo na saida padrao */
-template <class T>
-void TipoGrafo<T>::imprimir()  {
-
-    long numVertices = this->numVertices;
-
-    for( long i=0; i<numVertices; ++i )  {
-        cout << "\nVertice " << i << ": " ;
-        this->listaDeAdjacencia[i].imprimir();
-        cout << "\n";
-    }
-
-} /*  Fim da definicao do metodo imprimir.  */     
 
 
 
@@ -187,6 +203,68 @@ long TipoGrafo<T>::auxPesquisarCaminhoPesoMaximo( long u, long v,
                                                   bool verticeVisitado[], 
                                                   long& pesoMaximo, long& pesoAtual )  {
 
+//    cout << "\n\nINICIO - Array Bool:  ";
+//    for( long i=0; i<this->numVertices; ++i )  {
+
+//        cout <<  verticeVisitado[i] << ", ";
+//    }
+//    cout << "\nFIM - Array Bool\n\n";
+
+
+    cout << "\nvisitando vertice: " << u << "\n";
+
+    if( u == v ) return 0;
+
+    T item;
+    long idItem;
+
+    // Lista de adjacencia do vertice u
+    TipoLista<T>*  listaAdjacenciaVerticeU  =  &(this->listaDeAdjacencia[u]);
+
+    verticeVisitado[u] = true;
+
+    listaAdjacenciaVerticeU->primeiro();
+
+    while( listaAdjacenciaVerticeU->temMais() ) {
+
+        item = listaAdjacenciaVerticeU->getItem();
+        idItem = item.getID();
+
+        //if( (idItem != v) && !verticeVisitado[idItem] ) {
+        if( !verticeVisitado[idItem] ) {            
+
+            auxPesquisarCaminhoPesoMaximo( idItem, v, verticeVisitado, pesoMaximo, pesoAtual );
+            listaAdjacenciaVerticeU->proximo();
+
+        } else {
+
+            break;
+        }
+    }
+
+    verticeVisitado[u] = false;
+
+
     return 0;
 
 } /*  Fim da definicao do metodo auxPesquisarCaminhoPesoMaximo.  */     
+
+
+
+/*  Metodo que mostra o grafo na saida padrao */
+template <class T>
+void TipoGrafo<T>::imprimir()  {
+
+    long numVertices = this->numVertices;
+
+    for( long i=0; i<numVertices; ++i )  {
+        cout << "\nVertice " << i << ": " ;
+        this->listaDeAdjacencia[i].imprimir();
+        cout << "\n";
+    }
+
+} /*  Fim da definicao do metodo imprimir.  */     
+
+
+
+

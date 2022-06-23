@@ -64,11 +64,12 @@ int main()  {
 
 
     /* Mostrar consultas */
-    cout << "\n\n Consultas\n";    
+    cout << "\n\nConsultas\n";    
 
     long u;
     long v;
-    for( long i=0; i<q; ++i )  {
+//    for( long i=0; i<q; ++i )  {
+    for( long i=0; i<1; ++i )  {    
 
         cin >> u;
         cin >> v;
@@ -105,7 +106,7 @@ void carregarGrafo( TipoGrafo<TipoItem>& grafo, long m )  {
         cin >> v;
         cin >> capacidade;
 
-        grafo.inserirAresta( capacidade, u-1, v-1 );
+        grafo.inserirArestaOrdenadoDecrescente( capacidade, u-1, v-1 );
     }
 
 } // Fim da funcao carregarGrafo
