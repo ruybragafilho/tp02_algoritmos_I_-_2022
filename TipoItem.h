@@ -22,8 +22,8 @@ class TipoItem   {
 	
 	private: 
     
-        long   id;
-        double peso;      
+        long  id;
+        long  peso;      
 
         
     public:
@@ -42,10 +42,10 @@ class TipoItem   {
             
         /*  Método que ajusta o atributo peso com  */
         /*  o valor passado como parametro.        */
-        void setPeso( double peso );    
+        void setPeso( long peso );    
         
         /*  Método que retorna o atributo peso  */
-        double getPeso();          
+        long getPeso();          
 
         /*  Método que imprime o item  */
         void imprimir();        

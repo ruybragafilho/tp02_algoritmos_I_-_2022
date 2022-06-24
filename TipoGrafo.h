@@ -50,9 +50,9 @@ class TipoGrafo   {
         /*               o momento.                                      */
         /*   pesoAtual: peso do caminho atual                            */        
         /*                                                               */
-        long auxPesquisarCaminhoPesoMaximo( long u, long v, 
+        void auxPesquisarCaminhoPesoMaximo( long u, long v, 
                                             bool verticeVisitado[], 
-                                            long& pesoMaximo, long& pesoAtual );
+                                            long& pesoMaximo, long pesoAtual );
 
 
     public:

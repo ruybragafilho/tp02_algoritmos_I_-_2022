@@ -28,13 +28,13 @@ long TipoItem::getID()   {
 
 /*  Definicao do Método que ajusta o atributo peso  */
 /*  com o valor passado como parametro.                 */
-void TipoItem::setPeso( double peso )   {
+void TipoItem::setPeso( long peso )   {
     this->peso  =  peso;  
 }    
 
 
 /*  Definicao do Método que retorna o atributo peso  */
-double TipoItem::getPeso()   {
+long TipoItem::getPeso()   {
     return( peso );  
 }           
 

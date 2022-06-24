@@ -31,59 +31,36 @@ void carregarGrafo( TipoGrafo<TipoItem>& grafo, long m );
 /* Definição da função main */
 int main()  {
 
-    cout << "\n\nInicio\n\n";
-
+    long maiorCaminho;
 
     /* Número de Cidades */
     long n; 
     cin >> n;    
-    cout << "n: " << n;
-
 
     /* Número de Rodovias */
     long m;
     cin >> m;
-    cout << "\nm: " << m;
-
 
     /* Número de Consultas */
     long q;
     cin >> q;
-    cout << "\nq: " << q;    
-
-
-
     
     /* Grafo contendo as cidades (vertices) e as */
     /* rodovias (arestas).                       */
     TipoGrafo<TipoItem> grafo( n );
     carregarGrafo( grafo, m );
 
-    cout << "\n\n Mostrar o Grafo\n";
-    grafo.imprimir();
-
-
-    /* Mostrar consultas */
-    cout << "\n\nConsultas\n";    
-
+    /* Consultas */    
     long u;
     long v;
-//    for( long i=0; i<q; ++i )  {
-    for( long i=0; i<1; ++i )  {    
+    for( long i=0; i<q; ++i )  {
 
         cin >> u;
         cin >> v;
-
-        --u;
-        --v;
    
-        cout << "(" << u << ", " << v << ")";        
-        cout << "\nMaior Caminho: " << grafo.pesquisarCaminhoPesoMaximo( u, v ) << "\n\n";
+        maiorCaminho = grafo.pesquisarCaminhoPesoMaximo( u-1, v-1 );
+        cout << maiorCaminho << "\n";
     }
-
-
-   
-    cout << "\n\nFim\n\n";    
 
     return 0;
 

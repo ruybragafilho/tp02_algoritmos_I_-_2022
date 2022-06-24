@@ -177,11 +177,21 @@ long TipoGrafo<T>::pesquisarCaminhoPesoMaximo( long u, long v )  {
     long pesoMaximo = 0;
     long pesoAtual = 0;
 
+
+    // Aponta os cursores do grafo para o inicio das listas de adjacencia
     resetCursores();
 
-    long caminho = auxPesquisarCaminhoPesoMaximo( u, v, verticeVisitado, pesoMaximo, pesoAtual );
+    // obtem o peso da aresta de maior peso , que sai do vertice u
+    TipoLista<T>*  listaAdjacenciaVerticeU  =  &(this->listaDeAdjacencia[u]);
+    listaAdjacenciaVerticeU->primeiro();
+    TipoItem item = listaAdjacenciaVerticeU->getItem();
+    pesoAtual = item.getPeso();
 
-    return caminho;
+    // chama o metodo que vai calcular o caminho de peso maximo    
+    auxPesquisarCaminhoPesoMaximo( u, v, verticeVisitado, pesoMaximo, pesoAtual );
+
+    // retorna o caminho de peso maximo
+    return pesoMaximo;
 
 } /*  Fim da definicao do metodo pesquisarCaminhoPesoMaximo.  */
 
@@ -199,53 +209,55 @@ long TipoGrafo<T>::pesquisarCaminhoPesoMaximo( long u, long v )  {
 /*   pesoAtual: peso do caminho atual                            */        
 /*                                                               */
 template <class T>
-long TipoGrafo<T>::auxPesquisarCaminhoPesoMaximo( long u, long v, 
+void TipoGrafo<T>::auxPesquisarCaminhoPesoMaximo( long u, long v, 
                                                   bool verticeVisitado[], 
-                                                  long& pesoMaximo, long& pesoAtual )  {
+                                                  long& pesoMaximo, long pesoAtual )  {
 
-//    cout << "\n\nINICIO - Array Bool:  ";
-//    for( long i=0; i<this->numVertices; ++i )  {
+    /* Testa se chegou ao destino */
+    if( u == v )  {
 
-//        cout <<  verticeVisitado[i] << ", ";
-//    }
-//    cout << "\nFIM - Array Bool\n\n";
+        if( pesoMaximo < pesoAtual )  pesoMaximo = pesoAtual;
+        return;
+    }
 
+    /* Registra a visita ao vertice atual */
+    verticeVisitado[u] = true;
 
-    cout << "\nvisitando vertice: " << u << "\n";
-
-    if( u == v ) return 0;
-
-    T item;
-    long idItem;
-
-    // Lista de adjacencia do vertice u
+    /* Lista de adjacencia do vertice atual */
     TipoLista<T>*  listaAdjacenciaVerticeU  =  &(this->listaDeAdjacencia[u]);
 
-    verticeVisitado[u] = true;
+
+    /* procura caminhos a partir do vertice atual ate o vertice v */
+    /* usando busca em profundidade.                              */  
 
     listaAdjacenciaVerticeU->primeiro();
 
     while( listaAdjacenciaVerticeU->temMais() ) {
 
-        item = listaAdjacenciaVerticeU->getItem();
-        idItem = item.getID();
+        T item = listaAdjacenciaVerticeU->getItem();
+        long idItem = item.getID();
 
-        //if( (idItem != v) && !verticeVisitado[idItem] ) {
-        if( !verticeVisitado[idItem] ) {            
+        /* visita o proximo vertice nao visitado da lista da */
+        /* lista de adjacencia do vertice atual              */
+        if( !verticeVisitado[idItem] ) {           
 
-            auxPesquisarCaminhoPesoMaximo( idItem, v, verticeVisitado, pesoMaximo, pesoAtual );
-            listaAdjacenciaVerticeU->proximo();
+            long pesoItem = item.getPeso();    
+    
+            /* Contabiliza o peso maximo do caminho ate o proximo vertice */            
+            if( pesoAtual > pesoItem )  { 
+    
+                pesoAtual = pesoItem;
+            }             
 
-        } else {
+            auxPesquisarCaminhoPesoMaximo( idItem, v, verticeVisitado, pesoMaximo, pesoAtual );         
+        } 
 
-            break;
-        }
+        listaAdjacenciaVerticeU->proximo();
     }
 
+    /* backtracking */
     verticeVisitado[u] = false;
-
-
-    return 0;
+    listaAdjacenciaVerticeU->primeiro();
 
 } /*  Fim da definicao do metodo auxPesquisarCaminhoPesoMaximo.  */     
 
