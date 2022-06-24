@@ -16,7 +16,7 @@ Compile:  TipoItem  Principal
 
 
 run:  $(BIN_DIR)/tp2
-	valgrind   $(BIN_DIR)/tp2 < caso_teste_04.txt
+	valgrind   $(BIN_DIR)/tp2 < caso_teste_02.txt
 
 
 

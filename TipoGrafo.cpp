@@ -243,13 +243,18 @@ void TipoGrafo<T>::auxPesquisarCaminhoPesoMaximo( long u, long v,
 
             long pesoItem = item.getPeso();    
     
-            /* Contabiliza o peso maximo do caminho ate o proximo vertice */            
-            if( pesoAtual > pesoItem )  { 
-    
-                pesoAtual = pesoItem;
-            }             
+            /* faz uma poda nas buscas, descartando caminhos */
+            /* que serao piores que o melhor caminho atual.  */
+            if( pesoItem >= pesoMaximo ) {
 
-            auxPesquisarCaminhoPesoMaximo( idItem, v, verticeVisitado, pesoMaximo, pesoAtual );         
+                /* Contabiliza o peso maximo do caminho ate o proximo vertice */            
+                if( pesoAtual > pesoItem )  { 
+        
+                    pesoAtual = pesoItem;
+                }             
+    
+                auxPesquisarCaminhoPesoMaximo( idItem, v, verticeVisitado, pesoMaximo, pesoAtual );         
+            }
         } 
 
         listaAdjacenciaVerticeU->proximo();
